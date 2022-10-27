@@ -14,17 +14,28 @@ Puzzle* generalSearch(Puzzle*, ManhattenDist);
 
 int main(){
     // std::cout << "Initial Board \n" ;
-    std::vector<int> nums = {1,3,6,5,0,2,4,7,8};
+    std::vector<std::vector<int>> depth;
+    depth.push_back({1,2,3,4,5,6,7,8,0});
+    depth.push_back({1,2,3,4,5,6,0,7,8});
+    depth.push_back({1,2,3,5,0,6,4,7,8});
+    depth.push_back({1,3,6,5,0,2,4,7,8});
+    depth.push_back({1,3,6,5,0,7,4,8,2});
+    depth.push_back({1,6,7,5,0,3,4,8,2});
+
     Puzzle* UCSanswer; 
     Puzzle* MTanswer;
     Puzzle* MDanswer;
     UniformCost UCS;
     MisplacedTile MT; 
     ManhattenDist MD;
-    Puzzle* StartState = new Puzzle(nums);
-    UCSanswer = generalSearch(StartState, UCS);
-    MTanswer = generalSearch(StartState, MT);
-    MDanswer = generalSearch(StartState, MD);
+
+    for(int i=0; i < depth.size(); i++){
+        Puzzle* StartState = new Puzzle(depth[i]);
+        UCSanswer = generalSearch(StartState, UCS);
+        MTanswer = generalSearch(StartState, MT);
+        MDanswer = generalSearch(StartState, MD);
+    }
+    
     return 0;
 }
 
