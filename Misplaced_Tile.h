@@ -7,7 +7,7 @@
 class MisplacedTile{
     public:
         std::vector<node*> heap; 
-        std::vector<Puzzle*> visited;
+        std::vector<node*> visited;
 
         MisplacedTile();
         MisplacedTile(node* newNode);

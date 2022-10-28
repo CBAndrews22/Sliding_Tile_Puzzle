@@ -4,13 +4,11 @@
 node::node(Puzzle* newPuzzle, int deep){
     puzzle = newPuzzle;
     this->depth = deep;
-    //calculateMisplaced();
 };
 
 node::node(Puzzle* newPuzzle){
     puzzle = newPuzzle;
     depth = 0;
-   // calculateMisplaced();
 }
 
 void node::calculateMisplaced(){
@@ -30,7 +28,7 @@ void node::calculateManhatten(){
     int curVal, goalInd,curRow, curCol, goalRow, goalCol;
     int tempDist =0;
 
-
+    
     for(int i=0; i < puzzle->bSize; i++){
         curVal = puzzle->Board[i];
         for(int j=0; j < puzzle->bSize; j++){

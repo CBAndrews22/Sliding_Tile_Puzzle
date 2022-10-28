@@ -7,7 +7,8 @@
 #include "Misplaced_Tile.h"
 #include "Manhattan_Dist.h"
 
-
+//g++ -o Solution Project_1.cpp Manhattan_Dist.cpp Misplaced_Tile.cpp Uniform_Cost_Search.cpp Puzzle_Game.cpp Node.cpp
+//g++ -g -o debug Project_1.cpp Manhattan_Dist.cpp Misplaced_Tile.cpp Uniform_Cost_Search.cpp Puzzle_Game.cpp Node.cpp
 Puzzle* generalSearch(Puzzle*, UniformCost);
 Puzzle* generalSearch(Puzzle*, MisplacedTile);
 Puzzle* generalSearch(Puzzle*, ManhattenDist);
@@ -15,12 +16,12 @@ Puzzle* generalSearch(Puzzle*, ManhattenDist);
 int main(){
     // std::cout << "Initial Board \n" ;
     std::vector<std::vector<int>> depth;
-    depth.push_back({1,2,3,4,5,6,7,8,0});
-    depth.push_back({1,2,3,4,5,6,0,7,8});
-    depth.push_back({1,2,3,5,0,6,4,7,8});
-    depth.push_back({1,3,6,5,0,2,4,7,8});
-    depth.push_back({1,3,6,5,0,7,4,8,2});
-    depth.push_back({1,6,7,5,0,3,4,8,2});
+    depth.push_back({1,2,3,4,5,6,7,8,0}); // depth 0
+    depth.push_back({1,2,3,4,5,6,0,7,8}); // depth 2
+    depth.push_back({1,2,3,5,0,6,4,7,8}); // depth 4
+    depth.push_back({1,3,6,5,0,2,4,7,8}); // depth 8
+    depth.push_back({1,3,6,5,0,7,4,8,2}); // depth 12
+    depth.push_back({1,6,7,5,0,3,4,8,2}); // depth 16
 
     Puzzle* UCSanswer; 
     Puzzle* MTanswer;
@@ -28,6 +29,7 @@ int main(){
     UniformCost UCS;
     MisplacedTile MT; 
     ManhattenDist MD;
+
 
     for(int i=0; i < depth.size(); i++){
         Puzzle* StartState = new Puzzle(depth[i]);

@@ -6,7 +6,7 @@
 class ManhattenDist{
     public:
         std::vector<node*> heap;
-        std::vector<Puzzle*> visited;
+        std::vector<node*> visited;
 
         ManhattenDist();
         ManhattenDist(node* newNode);

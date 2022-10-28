@@ -11,7 +11,8 @@ MisplacedTile::MisplacedTile(node* newNode){
 
 bool MisplacedTile::isVisited(node* curNode){
     for(int i=0; i < visited.size(); i++){
-        if(curNode->puzzle->Board == visited[i]->Board){ return true; }
+        if(curNode->puzzle->Board == visited[i]->puzzle->Board &&
+           curNode->depth >= visited[i]->depth){ return true; }
     }
     return false;
 };
@@ -46,7 +47,7 @@ void MisplacedTile::push(node* newNode){
     //First checks if the board has been visited
     if(!isVisited(newNode)){
         newNode->calculateMisplaced();
-        visited.push_back(newNode->puzzle);
+        visited.push_back(newNode);
         int index = heap.size(); // The index of the node being added to the heap
         //std::cout << index << '\n';
         int parentIndex;
