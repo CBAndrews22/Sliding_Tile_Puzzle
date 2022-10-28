@@ -22,6 +22,7 @@ int main(){
     depth.push_back({1,3,6,5,0,2,4,7,8}); // depth 8
     depth.push_back({1,3,6,5,0,7,4,8,2}); // depth 12
     depth.push_back({1,6,7,5,0,3,4,8,2}); // depth 16
+    std::cout << "Let the games begin!!\nWhat would you like to do?\n";
 
     Puzzle* UCSanswer; 
     Puzzle* MTanswer;
