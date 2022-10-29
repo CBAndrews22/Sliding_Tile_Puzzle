@@ -12,7 +12,7 @@ class UniformCost{
 
         UniformCost();
         bool isVisited(Puzzle* newPuzzle);  //checks if a puzzle arrangement has been visited previously 
-        void expand(node* curNode);         //applies opperators to current node
+        void expand(node* curNode);         //applies operators to current node
         void push(Puzzle* puzzle, int depth);
 };
 
