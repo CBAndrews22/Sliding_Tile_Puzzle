@@ -8,15 +8,17 @@
 #include "Misplaced_Tile.h"
 #include "Manhattan_Dist.h"
 
-//g++ -o Solution Project_1.cpp Manhattan_Dist.cpp Misplaced_Tile.cpp Uniform_Cost_Search.cpp Puzzle_Game.cpp Node.cpp
-//g++ -g -o debug Project_1.cpp Manhattan_Dist.cpp Misplaced_Tile.cpp Uniform_Cost_Search.cpp Puzzle_Game.cpp Node.cpp
 Puzzle* generalSearch(Puzzle*, UniformCost);
 Puzzle* generalSearch(Puzzle*, MisplacedTile);
 Puzzle* generalSearch(Puzzle*, ManhattenDist);
 
 int main(){
 
-    std::cout << "Welcome to The Eight-Puzzle Solver.\nChoose an option.\n\t(1) Use Default Puzzle\n\t(2) Enter custom puzzle\n\t(3) Quit\n";
+    std::cout << "Welcome to The Eight-Puzzle Solver.\n"
+              << "Choose an option.\n"
+              << "\t(1) Use Default Puzzle\n"
+              << "\t(2) Enter custom puzzle\n"
+              << "\t(3) Quit\n";
     int userOption;
     std::cin >> userOption;
     std::vector<int> initPuzzle;
