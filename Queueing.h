@@ -21,6 +21,7 @@ class Queueing{
         node* pop();
         void getSolutionPath(node* goalState);
         void printFinish();
+        void traceBack();
 
 };
 

@@ -1,4 +1,4 @@
-Solution: Project_1.o Manhattan_Dist.o Misplaced_Tile.o Uniform_Cost_Search.o Puzzle_Game.o Node.o 
+Solution: Project_1.o Manhattan_Dist.o Misplaced_Tile.o Uniform_Cost_Search.o Queueing.o Puzzle_Game.o Node.o 
 	g++ Project_1.o Manhattan_Dist.o Misplaced_Tile.o Uniform_Cost_Search.o Queueing.o Puzzle_Game.o Node.o -o Solution
 
 Debug: 

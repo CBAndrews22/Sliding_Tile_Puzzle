@@ -101,13 +101,22 @@ void Queueing::getSolutionPath(node* goalState)
 void Queueing::printFinish()
 {
     std::cout << "Start State\n";
-    heap[0]->puzzle->printBoard();
+    solutionPath.head->puzzle->printBoard();
     std::cout << "\nGoal State\n";
     solutionPath.tail->puzzle->printBoard();
     std::cout << "Nodes Expanded : " << nodesExpanded
               << "\nSolution Depth: " << solutionDepth 
-                      << "\nRun Time: " << runTime
-                      << "\nMax queue size: " << maxHeapSize << "\n\n"; 
+              << "\nRun Time: " << runTime
+              << "\nMax queue size: " << maxHeapSize << "\n\n"; 
+}
+
+void Queueing::traceBack()
+{
+    solutionPath.printList();
+    std::cout << "Nodes Expanded : " << nodesExpanded
+              << "\nSolution Depth: " << solutionDepth 
+              << "\nRun Time: " << runTime
+              << "\nMax queue size: " << maxHeapSize << "\n\n";
 }
 
 

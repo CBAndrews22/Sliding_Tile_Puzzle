@@ -58,7 +58,7 @@ int main(){
         answer = generalSearch(StartState, UC);
         if(traceBack == 1)
         {
-            UC.solutionPath.printList();
+            UC.traceBack();
         }
         else
         {
@@ -72,7 +72,7 @@ int main(){
         answer = generalSearch(StartState, MT);
         if(traceBack == 1)
         {
-            MT.solutionPath.printList();
+            MT.traceBack();
         }
         else
         {
@@ -86,7 +86,7 @@ int main(){
         answer = generalSearch(StartState, MD);
         if(traceBack == 1)
         {
-            MD.solutionPath.printList();
+            MD.traceBack();
         }
         else
         {
@@ -94,14 +94,26 @@ int main(){
         }
 
     }
-    
+
     // std::vector<std::vector<int>> depth;
+
     // depth.push_back({1,2,3,4,5,6,7,8,0}); // depth 0
     // depth.push_back({1,2,3,4,5,6,0,7,8}); // depth 2
     // depth.push_back({1,2,3,5,0,6,4,7,8}); // depth 4
     // depth.push_back({1,3,6,5,0,2,4,7,8}); // depth 8
     // depth.push_back({1,3,6,5,0,7,4,8,2}); // depth 12
     // depth.push_back({1,6,7,5,0,3,4,8,2}); // depth 16
+
+    // UniformCost UC;
+    // MisplacedTile MT;
+    // ManhattanDist MD;
+
+    // generalSearch(new Puzzle(depth[5]), UC);
+    // UC.printFinish();
+    // generalSearch(new Puzzle(depth[5]), MT);
+    // MT.printFinish();
+    // generalSearch(new Puzzle(depth[5]), MD);
+    // MD.printFinish();
     
     return 0;
 }
