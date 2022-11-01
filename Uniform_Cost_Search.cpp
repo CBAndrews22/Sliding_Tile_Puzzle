@@ -2,45 +2,48 @@
 
 
 UniformCost::UniformCost(){
-    visited.clear();
+    heapSize = 0;
+    maxHeapSize = 0;
 };
 
-bool UniformCost::isVisited(Puzzle* newPuzzle){
-    for(int i=0; i < visited.size(); i++){
-        if(newPuzzle->Board == visited[i]->puzzle->Board){
-            return true;
-        }
-    }
-    return false;
-};
+UniformCost::UniformCost(node* newNode){
+    heapSize = 0;
+    maxHeapSize = 0;
+    push(newNode);
+}
 
-void UniformCost::push(Puzzle* puzzle, int deep){
-    node* temp = new node(puzzle, deep);
-    queue.push(temp);
-    visited.push_back(temp);
-};
 
 void UniformCost::expand(node* curNode){
-    int index = curNode->puzzle->zeroIndex;
-    int deep = curNode->depth + 1;
+    int newDepth = curNode->depth +1;
+    int curZeroInd = curNode->puzzle->zeroIndex;
+    node* newNode;
 
-    if(curNode->puzzle->zeroIndex >= curNode->puzzle->nSize && !this->isVisited(curNode->puzzle->moveUp())){
+    //If not in the top row move up
+    if(curZeroInd >= curNode->puzzle->nSize){
         //std::cout << "move up\n";
-        this->push(curNode->puzzle->moveUp(), deep);
+        newNode = new node(curNode, curNode->puzzle->moveUp(), newDepth);
+        newNode->priority = newDepth;
+        push(newNode);
     }
-
-    if(curNode->puzzle->zeroIndex < (curNode->puzzle->bSize - curNode->puzzle->nSize) && !this->isVisited(curNode->puzzle->moveDown())){
+    //If not in bottom row move down
+    if(curZeroInd < (curNode->puzzle->bSize - curNode->puzzle->nSize)){
         //std::cout << "move down\n";
-        push(curNode->puzzle->moveDown(), deep);
+        newNode = new node(curNode, curNode->puzzle->moveDown(), newDepth);
+        newNode->priority = newDepth;
+        push(newNode);
     }
-    
-    if((curNode->puzzle->zeroIndex % curNode->puzzle->nSize) != 0 && !this->isVisited(curNode->puzzle->moveLeft())){
+    //If not in left column move left
+    if((curZeroInd % curNode->puzzle->nSize) != 0){
         //std::cout << "move left\n";
-        push(curNode->puzzle->moveLeft(), deep);
+        newNode = new node(curNode, curNode->puzzle->moveLeft(), newDepth);
+        newNode->priority = newDepth;
+        push(newNode);
     }
-
-    if((curNode->puzzle->zeroIndex % curNode->puzzle->nSize) != (curNode->puzzle->nSize -1) && !this->isVisited(curNode->puzzle->moveRight())){
+    //If not in right column move right
+    if((curZeroInd % curNode->puzzle->nSize) != (curNode->puzzle->nSize -1)){
         //std::cout << "move right\n";
-        push(curNode->puzzle->moveRight(), deep);
+        newNode = new node(curNode, curNode->puzzle->moveRight(), newDepth);
+        newNode->priority = newDepth;
+        push(newNode);
     }
 }

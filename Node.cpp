@@ -1,30 +1,34 @@
 #include "Node.h"
 
 
-node::node(Puzzle* newPuzzle, int deep){
+node::node(node* parentNode, Puzzle* newPuzzle, int deep){
     puzzle = newPuzzle;
-    this->depth = deep;
+    depth = deep;
+    parent = parentNode;
+
 };
 
 node::node(Puzzle* newPuzzle){
     puzzle = newPuzzle;
     depth = 0;
+    parent = NULL;
 }
 
 void node::calculateMisplaced(){
-    misplacedVal = 0;
+    int tempVal = 0;
     for(int i =0; i < puzzle->bSize; i++){
         if(puzzle->Board[i] != puzzle->Goal[i]){
-            misplacedVal +=1;
+            tempVal +=1;
         }
     }
     if(puzzle->Board[puzzle->zeroIndex] != puzzle->Goal[puzzle->zeroIndex]){
-        misplacedVal -=1;
+        tempVal -=1;
     }
-    misplacedVal += depth;
+    misplacedVal = tempVal;
+    priority = misplacedVal + depth;
 }
 
-void node::calculateManhatten(){
+void node::calculateManhattan(){
     int curVal, goalInd,curRow, curCol, goalRow, goalCol;
     int tempDist =0;
 
@@ -43,8 +47,8 @@ void node::calculateManhatten(){
             tempDist += abs(curRow - goalRow) + abs(curCol - goalCol);
         }
     }
-    tempDist += depth;
-    manhattenDist = tempDist;
+    manhattanDist = tempDist;
+    priority = manhattanDist + depth;
 }
 
 
@@ -85,10 +89,27 @@ void LinkedList::push(node* newNode){
     if(head == NULL){
         head = newNode;
         tail = newNode;
+        newNode->next = NULL;
     }
     else{
-        tail->next = newNode;
-        tail = newNode;
+        newNode->next = head;
+        head = newNode;
+    }
+}
+
+void LinkedList::printList()
+{
+    node* temp = head;
+    std::cout << "Starting State: ";
+    while(temp != NULL)
+    {
+        if(temp == tail){ std::cout << "Goal State: "; }
+        else if(temp != head){ std::cout << "Next State: ";}
+        std::cout << "g(n) = " << temp->depth
+                  << " and h(n) = " << temp->priority - temp->depth << "\n";
+        temp->puzzle->printBoard();
+        std::cout << std::endl;
+        temp = temp->next;
     }
 }
 
