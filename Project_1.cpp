@@ -7,10 +7,11 @@
 #include "Uniform_Cost_Search.h"
 #include "Misplaced_Tile.h"
 #include "Manhattan_Dist.h"
+#include "Queueing.h"
 
-Puzzle* generalSearch(Puzzle*, UniformCost);
-Puzzle* generalSearch(Puzzle*, MisplacedTile);
-Puzzle* generalSearch(Puzzle*, ManhattenDist);
+Puzzle* generalSearch(Puzzle*, UniformCost&);
+Puzzle* generalSearch(Puzzle*, MisplacedTile&);
+Puzzle* generalSearch(Puzzle*, ManhattanDist&);
 
 int main(){
 
@@ -43,25 +44,57 @@ int main(){
                  "(3) Manhattan Distance\n";
     std::cin >> userOption;
 
-    std::cout << "Starting Puzzle\n";
-    StartState->printBoard();
+    int traceBack;
+    std::cout << "Do you want the solution traceback?\n"
+              << "(1) Yes\n"
+              << "(2) No\n" ;
+    std::cin >> traceBack;
+
+    
 
     //Uniform Cost Search
     if(userOption == 1){
         UniformCost UC;
         answer = generalSearch(StartState, UC);
+        if(traceBack == 1)
+        {
+            UC.solutionPath.printList();
+        }
+        else
+        {
+            UC.printFinish();
+        }
     }
-    else if(userOption == 2){
+
+    else if(userOption == 2)
+    {
         MisplacedTile MT;
         answer = generalSearch(StartState, MT);
+        if(traceBack == 1)
+        {
+            MT.solutionPath.printList();
+        }
+        else
+        {
+            MT.printFinish();
+        }
     }
-    else{
-        ManhattenDist MD;
+
+    else if(userOption == 3)
+    {
+        ManhattanDist MD;
         answer = generalSearch(StartState, MD);
+        if(traceBack == 1)
+        {
+            MD.solutionPath.printList();
+        }
+        else
+        {
+            MD.printFinish();
+        }
+
     }
-
     
-
     // std::vector<std::vector<int>> depth;
     // depth.push_back({1,2,3,4,5,6,7,8,0}); // depth 0
     // depth.push_back({1,2,3,4,5,6,0,7,8}); // depth 2
@@ -74,80 +107,62 @@ int main(){
 }
 
 
-Puzzle* generalSearch(Puzzle* startState, UniformCost UC){
-        clock_t t = clock();
-        UC.push(startState, 0);        //Adds startState to queue
-        node* currNode;
-        int nodesTested = 0;                 
-        while(UC.queue.head != NULL){               //while queue is not empty
-            currNode = UC.queue.pop();              //remove front node from queue
-            nodesTested++;
-            //std::cout << "Current Node\n";      
-            //currNode->puzzle->printBoard();
-            //std::cout << "depth: " << currNode->depth << '\n';
-            if(currNode->puzzle->Board == currNode->puzzle->Goal){ // Checking for goal state
-                t = clock() - t;
-                std::cout << "Uniform Cost Search Done\n";
-                currNode->puzzle->printBoard();
-                std::cout << "Nodes tested: " << nodesTested 
-                          << "\nSolution Depth: " << currNode->depth 
-                          << "\nRun Time: " << t << "\n\n";
-                return currNode->puzzle; }                      // Return solved puzzle
-            UC.expand(currNode);                //Adds the Current node's children to the back of the queue
+Puzzle* generalSearch(Puzzle* startState, UniformCost& UC){
+        UC.runTime = clock();
+        UC.nodesExpanded = 0; 
+        UC.push(new node(startState)); //pushes start state to queue
+        node* curNode;
+        while(!UC.heap.empty())     //while queue is not empty
+        {               
+            curNode = UC.pop();              //remove front node from queue
+            if(curNode->puzzle->Board == curNode->puzzle->Goal){ // Checking for goal state
+                UC.runTime = clock() - UC.runTime;
+                UC.solutionDepth = curNode->depth;
+                UC.getSolutionPath(curNode);
+                return curNode->puzzle; }    // Return solved puzzle
+            UC.expand(curNode);     //Adds the Current node's children to the back of the queue
+            UC.nodesExpanded++;
         }
-        
         return  NULL;
     };
 
-Puzzle* generalSearch(Puzzle* startState, MisplacedTile MT){
-    clock_t t = clock();
+Puzzle* generalSearch(Puzzle* startState, MisplacedTile& MT){
+    MT.runTime = clock();
+    MT.nodesExpanded = 0;
     MT.push(new node(startState));
+    MT.heap[0]->calculateMisplaced();
     node* curNode;
-    int nodesTested = 0;
     while(!MT.heap.empty()){
         curNode = MT.pop();
-        nodesTested++;
-        // std::cout << "\nCurrent Node\n";
-        // curNode->puzzle->printBoard();
-        // std::cout << "Misplaced Tiles: " << curNode->misplacedVal 
-        //           << "\ndepth: " << curNode->depth << '\n';
         if(curNode->puzzle->Board == curNode->puzzle->Goal){
-            t = clock() - t;
-            std::cout << "Misplaced Tiles Done\n";
-            curNode->puzzle->printBoard();
-            std::cout << "Nodes Tested: " << nodesTested 
-                      << "\nSolution Depth: " << curNode->depth 
-                      << "\nRun Time: " << t << "\n\n";
+            MT.runTime = clock() - MT.runTime;
+            MT.solutionDepth = curNode->depth;
+            MT.getSolutionPath(curNode);
             return curNode->puzzle;
         }
         MT.expand(curNode);
+        MT.nodesExpanded++;
     }
     
     return NULL;
 }
 
-Puzzle* generalSearch(Puzzle* startState, ManhattenDist MD){
-    clock_t t = clock();
+Puzzle* generalSearch(Puzzle* startState, ManhattanDist& MD){
+    MD.runTime = clock();
+    MD.nodesExpanded = 0;
     MD.push(new node(startState));
+    MD.heap[0]->calculateManhattan();
     node* curNode;
-    int nodesTested = 0;
     while(!MD.heap.empty()){
         curNode = MD.pop();
-        nodesTested++;
-        // std::cout << "\nCurrent Node\n";
-        // curNode->puzzle->printBoard();
-        // std::cout << "Manhatten Dist: " << curNode->manhattenDist
-        //           << "\ndepth: " << curNode->depth << '\n';
         if(curNode->puzzle->Board == curNode->puzzle->Goal){
-            t = clock() - t;
-            std::cout << "Manhatten Distance Done\n";
-            curNode->puzzle->printBoard();
-            std::cout << "Nodes Tested: " << nodesTested 
-                      << "\nSolution Depth: " << curNode->depth 
-                      << "\nRun Time: " << t << "\n\n";
+            MD.runTime = clock() - MD.runTime;
+            MD.solutionDepth = curNode->depth;
+            MD.getSolutionPath(curNode);
             return curNode->puzzle;
         }
         MD.expand(curNode);
+        MD.nodesExpanded++;
     }
     return NULL;
 }

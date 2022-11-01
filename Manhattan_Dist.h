@@ -2,19 +2,14 @@
 #define __Manhattan_Distance__
 
 #include "Node.h"
+#include "Queueing.h"
 
-class ManhattenDist{
+class ManhattanDist : public Queueing
+{
     public:
-        std::vector<node*> heap;
-        std::vector<node*> visited;
+        ManhattanDist();
+        ManhattanDist(node* newNode);
 
-        ManhattenDist();
-        ManhattenDist(node* newNode);
-
-        bool isVisited(node* curNode);
         void expand(node* curNode);
-        void push(node* newNode);
-        node* pop();
-        void swap(int index1, int index2);
 };
 #endif

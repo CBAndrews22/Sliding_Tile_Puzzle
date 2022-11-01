@@ -8,14 +8,16 @@ class node{
     public:
         Puzzle* puzzle;
         node* next;
+        node* parent;
         int depth;
         int misplacedVal;
-        int manhattenDist;
-        node(Puzzle* newPuzzle, int deep);
+        int manhattanDist;
+        int priority;
+        node(node* parentNode, Puzzle* newPuzzle, int deep);
         node(Puzzle* newPuzzle);
         
         void calculateMisplaced();
-        void calculateManhatten();
+        void calculateManhattan();
     private:
 
 };
@@ -29,6 +31,7 @@ class LinkedList{
 
         node* pop();
         void push(node* newNode);
+        void printList();
 };
 
 
